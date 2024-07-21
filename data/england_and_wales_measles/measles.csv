@@ -1,4 +1,4 @@
-"time","cases","births","population","city","latitude","longitude"
+"time","cases","births","pop","city","lat","lon"
 1944,1,106.0744106,118625.5302,"Birkenhead",53.388,-3.045
 1944.038462,0,104.2864044,118457.7946,"Birkenhead",53.388,-3.045
 1944.076923,0,102.6310783,118319.3067,"Birkenhead",53.388,-3.045
