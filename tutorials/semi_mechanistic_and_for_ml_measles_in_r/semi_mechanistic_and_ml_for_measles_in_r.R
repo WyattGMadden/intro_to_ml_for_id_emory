@@ -82,8 +82,8 @@ beta_est <- unique(london_tsir_est$beta)
 alpha_est <- london_tsir_est$alpha
 rho_est <- london_tsir_est$rho
 S_est <- london_tsir_est$simS[, "mean"]
-cases_est <- london_tsir_est$res$mean
-I_est <- cases_est * rho_est
+incidence_est <- london_tsir_est$res$mean
+I_est <- incidence_est * rho_est
 
 S_one_step_ahead <- rep(NA, nrow(london_measles))
 I_one_step_ahead <- rep(NA, nrow(london_measles))
@@ -152,6 +152,7 @@ cv.lasso.oneahead <- cv.glmnet(
     intercept = T)
 
 plot(cv.lasso.oneahead)
+
 model.oneahead <- glmnet(
     X_train, 
     Y_train, 
@@ -164,32 +165,34 @@ model.oneahead <- glmnet(
 
 train_pred <- predict(
     model.oneahead,
-    newx = X_train
+    newx = X_train,
+    type = "response"
     )
 
-plot(exp(train_pred), Y_train)
-mean((exp(train_pred) - Y_train)^2)
+plot(train_pred, Y_train)
+mean((train_pred - Y_train)^2)
 
 lasso_data_train$pred <- train_pred
 
 lasso_data_train |>
     ggplot(aes(x = time)) +
     geom_line(aes(y = cases)) +
-    geom_line(aes(y = exp(pred)), colour = "red")
+    geom_line(aes(y = pred), colour = "red")
 
 # predict on test set
 X_test <- as.matrix(lasso_data_test[, X_col_names])
 test_pred <- predict(
     model.oneahead,
-    newx = X_test
+    newx = X_test,
+    type = "response"
     )
 
-lasso_data_test$lasso_pred <- exp(test_pred)
+lasso_data_test$lasso_pred <- test_pred
 
 lasso_data_test |>
     ggplot(aes(x = time)) +
     geom_line(aes(y = cases)) +
-    geom_line(aes(y = exp(lasso_pred)), colour = "red")
+    geom_line(aes(y = lasso_pred), colour = "red")
 
 
 
