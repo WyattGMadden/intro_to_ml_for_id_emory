@@ -184,12 +184,12 @@ test_pred <- predict(
     newx = X_test
     )
 
-lasso_data_test$pred <- test_pred
+lasso_data_test$lasso_pred <- exp(test_pred)
 
 lasso_data_test |>
     ggplot(aes(x = time)) +
     geom_line(aes(y = cases)) +
-    geom_line(aes(y = exp(pred)), colour = "red")
+    geom_line(aes(y = exp(lasso_pred)), colour = "red")
 
 
 
@@ -203,4 +203,22 @@ train_set_size <- round(nrow(london_measles) * train_set_proportion)
 train_london <- london_measles[1:train_set_size, ]
 test_london <- london_measles[(train_set_size + 1):nrow(london_measles), ]
 
+tsir_pred <- pred_dat[pred_dat$time %in% lasso_data_test$time, ]
 
+lasso_data_test$tsir_pred <- tsir_pred$cases_pred
+
+lasso_data_test |>
+    pivot_longer(c("cases", "tsir_pred", "lasso_pred"), 
+                 names_to = "type", 
+                 values_to = "value") |>
+    ggplot(aes(x = time, y = value, color = type, linetype = type)) +
+    geom_line() +
+    labs(title = "London Measles Cases: True vs. Predicted",
+         x = "Time",
+         y = "Cases")
+
+lasso_data_test$cases - lasso_data_test$tsir_pred
+mean((lasso_data_test$cases - lasso_data_test$tsir_pred)^2)
+mean((lasso_data_test$cases - lasso_data_test$lasso_pred)^2)
+mean(abs(lasso_data_test$cases - lasso_data_test$tsir_pred))
+mean(abs(lasso_data_test$cases - lasso_data_test$lasso_pred))
