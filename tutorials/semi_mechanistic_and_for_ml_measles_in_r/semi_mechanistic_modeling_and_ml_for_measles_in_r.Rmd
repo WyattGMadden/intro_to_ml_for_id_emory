@@ -1,7 +1,10 @@
 ---
 title: "Semi-Mechanistic Modeling and Machine Learning Models for Forecasting Measles Incidence"
 author: "Wyatt Madden"
-output: pdf_document
+output: 
+  pdf_document:
+    includes:
+      in_header: header.tex
 ---
 
 ```{r setup, include=FALSE}
@@ -16,9 +19,9 @@ theme_set(theme_bw())
 
 # Introduction
 
-In this tutorial, we will forecast measles incidence using both the semi-mechanistic TSIR model and the LASSO machine learning model. We will employ the seminal England and Wales pre-vaccination bi-weekly measles dataset (a description of which can be found [here](https://doi.org/10.1371/journal.pcbi.1010251)).
+In this tutorial, we will forecast measles incidence using both the semi-mechanistic TSIR model and the LASSO machine learning model. We will employ the seminal England and Wales pre-vaccination bi-weekly measles dataset (a description of which can be found \href{https://doi.org/10.1371/journal.pcbi.1010251}{here}). 
 
-This tutorial employs methods developed in [this paper] (https://doi.org/10.1371/journal.pcbi.1010251)), by Lau et al.. 
+This tutorial employs methods developed in \href{https://doi.org/10.1371/journal.pcbi.1010251}{this paper} by Lau et al.. 
 
 
 # Data
